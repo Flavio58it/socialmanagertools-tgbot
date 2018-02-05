@@ -1,0 +1,42 @@
+{
+  "name": "WordpressTelegramBot.js",
+  "version": "IN DEVELOPMENT",
+  "description": "Telegram Bot for any wordpress blog made with love and nodejs",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "start-forever": "forever -o ./logs/debug.log -e ./logs/errors.log start bot.js",
+    "start-pm2": "pm2 -o ./logs/debug.log -e ./logs/errors.log start bot.js",
+    "start-pm2-nolog": "pm2 -o /dev/null -e ./logs/errors.log start bot.js ",
+    "stop": "killall node",
+    "stop-forever": "forever stop bot.js",
+    "stop-pm2": "pm2 stop bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/social-manager-tools/wordpress-telegram-bot.js.git"
+  },
+  "keywords": [
+    "bot",
+    "ptkdev",
+    "wordpress-telegram",
+    "wordpress-telegram-bot",
+    "telegraf"
+  ],
+  "author": "Patryk Rzucidlo [@ptkdev] <support@ptkdev.io> (https://ptkdev.it)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/social-manager-tools/wordpress-telegram-bot.js/issues"
+  },
+  "homepage": "https://wordpress-telegram-bot.js.ptkdev.io",
+  "dependencies": {
+    "path": "^0.12.7",
+    "request": "^2.80.0",
+    "telegraf": "^3.14.1",
+    "nodemailer": "^4.3.1",
+    "localtunnel": "^1.8.3"
+  },
+  "engines": {
+    "node": ">=7.6.0"
+  }
+}
