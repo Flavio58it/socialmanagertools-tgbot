@@ -67,9 +67,23 @@ Command                 | Role       | Available at | Description
 
 Create new commands in `/modules/custom.js`
 
-# TODO
-Nice to have:
-* docker container
+# Docker container
+
+If you prefer to run this using Docker, an official container is available from the Docker Hub.
+
+In order to run it, copy the `config.js.tpl` file, configure it as you prefer, then use it through volume mapping,
+like in this example:
+
+```sh
+$ docker run \
+    --restart=always \
+    --name=wordpress-telegram-bot \
+    -d \
+    # Webhook Port ( if configured, 3000 is the default )
+    -p 3000:3000 \
+    -v /path/to/config.js:/app/config.js \
+    social-manager-tools/wordpress-telegram-bot &>/dev/null
+```
 
 # Sorry for snake_case
 I love snake_case syntax sorry for this :sob: don't hate me.
