@@ -23,7 +23,7 @@ module.exports = {
     "command_email_entervalidformat": "Riprova usando il formato",
     "command_email_done": "Email inviata :)",
 
-    "command_credits_text": "Bot telegram ope nsource in GPLv3 creato da @ptkdev",
+    "command_credits_text": "Bot telegram open source in GPLv3 creato da @ptkdev",
     "command_credits_url": "https://github.com/social-manager-tools/wordpress-telegram-bot.js",
 
     "command_help_text": "/ultimipost - mostra gli ultimi post pubblicati"+
