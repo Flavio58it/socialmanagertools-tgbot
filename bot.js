@@ -128,7 +128,8 @@ function start(ctx) {
     ctx.reply(translations.hello + config.wp_url);
 
     setTimeout(function() { ctx.reply(translations.hello_next); }, 3000);
-
+    console.log(ctx.chat.id+" - "+ctx.chat.username);
+    
     db.serialize(function() {
         let i = 0;
         db.each("SELECT rowid AS id, username FROM users WHERE chat_id = ?", ctx.chat.id, function(err, row) {
