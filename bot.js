@@ -36,7 +36,9 @@
  *
  */
 const Telegraf = require('telegraf');
+const sqlite3 = require('sqlite3').verbose();
 const config = require(__dirname + '/config');
+const translations = require(__dirname + '/translations/' + config.bot_language);
 const path = require('path');
 const request = require('request');
 
@@ -52,7 +54,11 @@ const request = require('request');
  * @changelog:  0.1 initial release
  *
  */
-const bot = new Telegraf(config.bot_token, {username: config.bot_username});
+const bot = new Telegraf(config.bot_token, { username: config.bot_username });;
+let db = new sqlite3.Database(__dirname + '/databases/users.db');
+db.serialize(function() {
+    db.run("CREATE TABLE IF NOT EXISTS users (chat_id INTEGER, first_name TEXT, last_name TEXT, username TEXT, type_chat TEXT, last_url TEXT)");
+});
 
 /**
  * Webhook
@@ -67,13 +73,13 @@ const bot = new Telegraf(config.bot_token, {username: config.bot_username});
  * @changelog:  0.1 initial release
  *
  */
-if(config.webhook){
+if (config.webhook) {
     // npm install -g localtunnel && lt --port 3000
-    bot.telegram.setWebhook(config.webhook_host+config.webhook_secretpath);
+    bot.telegram.setWebhook(config.webhook_host + config.webhook_secretpath);
 }
 
 /**
- * Router
+ * Modules
  * =====================
  * Commands and hears (reply message). Core of bot.
  *
@@ -83,8 +89,12 @@ if(config.webhook){
  * @changelog:  0.1 initial release
  *
  */
-require(__dirname + '/routes/commands')(bot, config, request);
-require(__dirname + '/routes/email')(bot, config, request);
+require(__dirname + '/modules/feed')(bot, config, db, request, translations);
+require(__dirname + '/modules/lastpost')(bot, config, request, translations);
+require(__dirname + '/modules/email')(bot, config, request, translations);
+require(__dirname + '/modules/credits')(bot, config, request, translations);
+require(__dirname + '/modules/help')(bot, config, request, translations);
+require(__dirname + '/modules/custom')(bot, config, request, translations);
 
 /**
  * Polling
@@ -99,14 +109,14 @@ require(__dirname + '/routes/email')(bot, config, request);
  * @changelog:  0.1 initial release
  *
  */
-if(!config.webhook){
+if (!config.webhook) {
     bot.startPolling();
 }
 
 /**
  * Command: start
  * =====================
- * Send "Hello!" and help message
+ * Send "Hello!" and help message. Insert in databases/users.db information of account. 
  *
  * @author:     Patryk Rzucidlo [@ptkdev] <info@ptkdev.it> (https://ptkdev.it)
  * @license:    This code and contributions have 'GNU General Public License v3'
@@ -115,7 +125,20 @@ if(!config.webhook){
  *
  */
 function start(ctx) {
-    ctx.reply('Hello!');
-    help(ctx);
+    ctx.reply(translations.hello + config.wp_url);
+
+    setTimeout(function() { ctx.reply(translations.hello_next); }, 3000);
+
+    db.serialize(function() {
+        let i = 0;
+        db.each("SELECT rowid AS id, username FROM users WHERE chat_id = ?", ctx.chat.id, function(err, row) {
+            i++;
+            console.log(row.username);
+        });
+        if (i == 0) {
+            db.run("INSERT INTO users (chat_id, first_name, last_name, username, type_chat, last_url) VALUES (?, ?, ?, ?, ?, ?)", ctx.chat.id, ctx.chat.first_name, ctx.chat.last_name, ctx.chat.username, ctx.chat.type, " ");
+        }
+    });
+
 }
 bot.command('start', start);

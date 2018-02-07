@@ -10,7 +10,7 @@
  * @changelog:  0.1 initial release
  *
  */
-module.exports = function(bot, config, request) {
+module.exports = function(bot, config, request, translations) {
     /**
      * Command: email
      * =====================
@@ -37,9 +37,9 @@ module.exports = function(bot, config, request) {
             email_text = (email_array[1]).trim();
         }
         if (!email_regex.test(email_from)) {
-            ctx.reply("Email non valida, esempio:\n/email your@email.com | text text text text text");
+            ctx.reply(translations.command_email_notvalid+":\n/email your@email.com | text text text text text");
         } else if (typeof email_array[1] === "undefined" || email_text.trim() == "") {
-            ctx.reply("Inserisci un testo valido, esempio:\n/email your@email.com | text text text text text");
+            ctx.reply(translations.command_email_entervalidtext+":\n/email your@email.com | text text text text text");
         } else {
             let smtp_config = {
                 host: config.smtp_server,
@@ -55,19 +55,19 @@ module.exports = function(bot, config, request) {
             var mail_options = {
                 from: email_from,
                 to: config.smtp_user,
-                subject: 'BOT: Email from ' + email_from,
+                subject: translations.command_email_emailfrom + email_from,
                 text: email_text
             };
 
             transporter.sendMail(mail_options, function(error, info) {
                 if (error) {
-                    ctx.reply("Errore... " + error);
-                    ctx.reply("Riprova usando il formato:\n/email your@email.com | text text text text text");
+                    ctx.reply(translations.command_email_error +" " + error);
+                    ctx.reply(translations.command_email_entervalidformat+":\n/email your@email.com | text text text text text");
                 } else {
-                    ctx.reply("Email inviata :)");
+                    ctx.reply(translations.command_email_done);
                 }
             });
         }
     }
-    bot.command('email', email);
+    bot.command(translations.command_email, email);
 };
