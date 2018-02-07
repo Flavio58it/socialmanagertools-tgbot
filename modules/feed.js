@@ -42,7 +42,7 @@ module.exports = function(bot, config, db, request, translations) {
                     limit++;
 
                     if(limit >= 29){ // bug: https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once
-                        sleep(1);
+                        sleep(1000);
                         limit = 0;
                     }
                 }
