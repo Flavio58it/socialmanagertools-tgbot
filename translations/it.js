@@ -26,8 +26,8 @@ module.exports = {
     "command_credits_text": "Bot telegram open source in GPLv3 creato da @ptkdev",
     "command_credits_url": "https://github.com/social-manager-tools/wordpress-telegram-bot.js",
 
-    "command_help_text": "/ultimipost - mostra gli ultimi post pubblicati"+
-			 			 "/email - contattaci con un'email"+
-						 "/aiuto - mostra la lista di comandi del bot "+
+    "command_help_text": "/ultimipost - mostra gli ultimi post pubblicati\n"+
+			 			 "/email - contattaci con un'email\n"+
+						 "/aiuto - mostra la lista di comandi del bot\n"+
 			 			 "/crediti - informazioni sul bot"
 }
